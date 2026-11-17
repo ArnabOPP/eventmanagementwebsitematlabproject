@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusPulse - College Events Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+--bg-main: #f8fafc;
+--bg-card: #ffffff;
+--text-primary: #0f172a;
+--text-secondary: #475569;
+--blue-primary: #1d4ed8;
+--blue-hover: #1e40af;
+--blue-soft: #eff6ff;
+--red-primary: #dc2626;
+--red-hover: #b91c1c;
+--red-soft: #fef2f2;
+--border-color: #dbeafe;
+--success: #15803d;
+}
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+body {
+font-family: 'Inter', sans-serif;
+background-color: var(--bg-main);
+color: var(--text-primary);
+line-height: 1.6;
+}
+header {
+background-color: var(--bg-card);
+border-bottom: 3px solid var(--blue-primary);
+padding: 1rem 5%;
+display: flex;
+justify-content: space-between;
+align-items: center;
+position: sticky;
+top: 0;
+z-index: 100;
+}
+.logo {
+font-size: 1.35rem;
+font-weight: 700;
+color: var(--blue-primary);
+text-decoration: none;
+letter-spacing: -0.5px;
+}
+.logo span {
+color: var(--red-primary);
+}
+nav a {
+text-decoration: none;
+color: var(--text-secondary);
+font-weight: 600;
+margin-left: 1.5rem;
+font-size: 0.95rem;
+transition: color 0.2s;
+}
+nav a:hover {
+color: var(--red-primary);
+}
+.hero {
+background: linear-gradient(180deg, var(--blue-soft) 0%, #ffffff 100%);
+border-bottom: 1px solid var(--border-color);
+text-align: center;
+padding: 4rem 1.5rem;
+}
+.hero h1 {
+font-size: 2.25rem;
+font-weight: 700;
+margin-bottom: 1rem;
+color: var(--blue-primary);
+}
+.hero p {
+font-size: 1.1rem;
+color: var(--text-secondary);
+max-width: 600px;
+margin: 0 auto 2rem auto;
+}
+.btn {
+display: inline-block;
+background-color: var(--red-primary);
+color: #ffffff;
+padding: 0.75rem 1.5rem;
+border: none;
+border-radius: 6px;
+font-size: 0.95rem;
+font-weight: 600;
+cursor: pointer;
+text-decoration: none;
+transition: background-color 0.2s;
+}
+.btn:hover {
+background-color: var(--red-hover);
+}
+.btn-outline {
+background-color: #ffffff;
+color: var(--blue-primary);
+border: 1.5px solid var(--blue-primary);
+}
+.btn-outline:hover {
+background-color: var(--blue-primary);
+color: #ffffff;
+}
+.container {
+max-width: 1100px;
+margin: 0 auto;
+padding: 3rem 1.5rem;
+}
+.section-header {
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 2rem;
+gap: 1rem;
+}
+.section-header h2 {
+font-size: 1.5rem;
+font-weight: 700;
+color: var(--blue-primary);
+}
+.filter-buttons {
+display: flex;
+flex-wrap: wrap;
+gap: 0.5rem;
+}
+.filter-btn {
+background-color: var(--bg-card);
+color: var(--text-secondary);
+border: 1px solid var(--border-color);
+padding: 0.5rem 1rem;
+border-radius: 6px;
+font-size: 0.9rem;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s;
+}
+.filter-btn:hover {
+border-color: var(--blue-primary);
+color: var(--blue-primary);
+}
+.filter-btn.active {
+background-color: var(--blue-primary);
+color: #ffffff;
+border-color: var(--blue-primary);
+}
+.events-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+gap: 1.5rem;
+}
+.event-card {
+background-color: var(--bg-card);
+border: 1px solid var(--border-color);
+border-top: 4px solid var(--blue-primary);
+border-radius: 8px;
+padding: 1.5rem;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.event-card:hover {
+transform: translateY(-3px);
+border-top-color: var(--red-primary);
+box-shadow: 0 6px 16px rgba(29, 78, 216, 0.1);
+}
+.card-top {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1rem;
+}
+.badge {
+background-color: var(--red-soft);
+color: var(--red-primary);
+border: 1px solid #fecaca;
+font-size: 0.75rem;
+font-weight: 700;
+padding: 0.25rem 0.6rem;
+border-radius: 4px;
+text-transform: uppercase;
+}
+.event-date {
+font-size: 0.85rem;
+color: var(--blue-primary);
+font-weight: 600;
+}
+.event-title {
+font-size: 1.2rem;
+font-weight: 700;
+margin-bottom: 0.5rem;
+color: var(--text-primary);
+}
+.event-desc {
+font-size: 0.95rem;
+color: var(--text-secondary);
+margin-bottom: 1.25rem;
+}
+.event-meta {
+font-size: 0.85rem;
+color: var(--text-secondary);
+margin-bottom: 1.25rem;
+padding-top: 0.75rem;
+border-top: 1px solid var(--blue-soft);
+}
+.add-event-section {
+background-color: var(--bg-card);
+border: 1px solid var(--border-color);
+border-left: 4px solid var(--red-primary);
+border-radius: 8px;
+padding: 2rem;
+margin-top: 4rem;
+}
+.add-event-section h2 {
+font-size: 1.35rem;
+color: var(--blue-primary);
+margin-bottom: 0.5rem;
+}
+.add-event-section p {
+color: var(--text-secondary);
+font-size: 0.95rem;
+margin-bottom: 1.5rem;
+}
+.form-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+gap: 1rem;
+margin-bottom: 1rem;
+}
+.form-group {
+display: flex;
+flex-direction: column;
+}
+.form-group label {
+font-size: 0.85rem;
+font-weight: 600;
+margin-bottom: 0.4rem;
+color: var(--text-primary);
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+padding: 0.65rem;
+border: 1px solid var(--border-color);
+border-radius: 6px;
+font-family: inherit;
+font-size: 0.95rem;
+background-color: var(--bg-main);
+color: var(--text-primary);
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+outline: 2px solid var(--blue-primary);
+background-color: #ffffff;
+}
+.modal-backdrop {
+display: none;
+position: fixed;
+inset: 0;
+background-color: rgba(15, 23, 42, 0.5);
+justify-content: center;
+align-items: center;
+padding: 1rem;
+z-index: 200;
+}
+.modal-box {
+background-color: var(--bg-card);
+border-radius: 8px;
+padding: 2rem;
+width: 100%;
+max-width: 420px;
+border: 1px solid var(--border-color);
+border-top: 4px solid var(--red-primary);
+}
+.modal-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1rem;
+color: var(--blue-primary);
+}
+.close-btn {
+background: none;
+border: none;
+font-size: 1.5rem;
+cursor: pointer;
+color: var(--text-secondary);
+}
+.toast {
+position: fixed;
+bottom: 20px;
+right: 20px;
+background-color: var(--blue-primary);
+color: #ffffff;
+padding: 0.85rem 1.25rem;
+border-radius: 6px;
+font-size: 0.9rem;
+font-weight: 500;
+display: none;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+z-index: 300;
+}
+footer {
+text-align: center;
+padding: 2rem 1rem;
+border-top: 2px solid var(--border-color);
+color: var(--text-secondary);
+font-size: 0.9rem;
+margin-top: 3rem;
+background-color: var(--bg-card);
+}
+@media (max-width: 600px) {
+.hero h1 { font-size: 1.75rem; }
+nav a { margin-left: 1rem; font-size: 0.85rem; }
+}
+</style>
+</head>
+<body>
+<header>
+<a href="#" class="logo">Campus<span>Pulse</span></a>
+<nav>
+<a href="#events">Events</a>
+<a href="#host-event">Host an Event</a>
+</nav>
+</header>
+<section class="hero">
+<h1>Discover What’s Happening on Campus</h1>
+<p>Stay updated with upcoming tech fests, cultural nights, workshops, and sports tournaments at our college.</p>
+<a href="#events" class="btn">Explore Upcoming Events</a>
+</section>
+<main class="container" id="events">
+<div class="section-header">
+<h2>Upcoming Events</h2>
+<div class="filter-buttons" id="filter-container">
+<button class="filter-btn active" data-category="All">All</button>
+<button class="filter-btn" data-category="Tech">Tech</button>
+<button class="filter-btn" data-category="Cultural">Cultural</button>
+<button class="filter-btn" data-category="Sports">Sports</button>
+</div>
+</div>
+<div class="events-grid" id="events-grid"></div>
+<section class="add-event-section" id="host-event">
+<h2>Organizing an Event? Add It Here</h2>
+<p>Submit your club or department event below to immediately display it on the campus board.</p>
+<form id="new-event-form">
+<div class="form-grid">
+<div class="form-group">
+<label for="title">Event Title</label>
+<input type="text" id="title" placeholder="e.g., Web Dev Bootcamp" required>
+</div>
+<div class="form-group">
+<label for="category">Category</label>
+<select id="category" required>
+<option value="Tech">Tech</option>
+<option value="Cultural">Cultural</option>
+<option value="Sports">Sports</option>
+</select>
+</div>
+<div class="form-group">
+<label for="date">Date</label>
+<input type="text" id="date" placeholder="e.g., Nov 25, 2026" required>
+</div>
+<div class="form-group">
+<label for="venue">Venue</label>
+<input type="text" id="venue" placeholder="e.g., Main Auditorium" required>
+</div>
+</div>
+<div class="form-group" style="margin-bottom: 1.25rem;">
+<label for="description">Short Description</label>
+<textarea id="description" rows="2" placeholder="Briefly describe what students can expect..." required></textarea>
+</div>
+<button type="submit" class="btn">Publish Event</button>
+</form>
+</section>
+</main>
+<div class="modal-backdrop" id="register-modal">
+<div class="modal-box">
+<div class="modal-header">
+<h3 id="modal-event-title">Register for Event</h3>
+<button class="close-btn" id="close-modal">&times;</button>
+</div>
+<form id="registration-form">
+<div class="form-group" style="margin-bottom: 1rem;">
+<label for="student-name">Full Name</label>
+<input type="text" id="student-name" placeholder="Enter your name" required>
+</div>
+<div class="form-group" style="margin-bottom: 1.5rem;">
+<label for="student-id">College Roll Number / Email</label>
+<input type="text" id="student-id" placeholder="e.g., 2026CS104" required>
+</div>
+<button type="submit" class="btn" style="width: 100%;">Confirm Registration</button>
+</form>
+</div>
+</div>
+<div class="toast" id="toast-msg">Action successful!</div>
+<footer>
+<p>&copy; 2026 CampusPulse Student Council. Built for our College Community.</p>
+</footer>
+<script>
+const eventsData = [
+{
+id: 1,
+title: "Annual Hackathon 2026",
+category: "Tech",
+date: "Nov 22, 2026",
+venue: "Computer Science Block, Lab 3",
+description: "A 24-hour coding sprint to build practical software solutions for campus challenges. Open to all branches."
+},
+{
+id: 2,
+title: "Acoustic Evening & Open Mic",
+category: "Cultural",
+date: "Nov 28, 2026",
+venue: "Open Air Amphitheatre",
+description: "Unwind with live music, poetry, and stand-up comedy performed by our college's Music and Drama societies."
+},
+{
+id: 3,
+title: "Inter-Department Futsal Cup",
+category: "Sports",
+date: "Dec 04, 2026",
+venue: "College Sports Complex",
+description: "Form a 5-a-side team from your department and compete for the annual winter championship trophy."
+},
+{
+id: 4,
+title: "Intro to Git & Open Source",
+category: "Tech",
+date: "Dec 10, 2026",
+venue: "Seminar Hall B",
+description: "A beginner-friendly hands-on session covering version control, pull requests, and contributing to real projects."
+}
+];
+const eventsGrid = document.getElementById('events-grid');
+const filterButtons = document.querySelectorAll('.filter-btn');
+const newEventForm = document.getElementById('new-event-form');
+const modal = document.getElementById('register-modal');
+const closeModalBtn = document.getElementById('close-modal');
+const modalEventTitle = document.getElementById('modal-event-title');
+const registrationForm = document.getElementById('registration-form');
+const toast = document.getElementById('toast-msg');
+let currentCategory = 'All';
+function showToast(message) {
+toast.textContent = message;
+toast.style.display = 'block';
+setTimeout(() => {
+toast.style.display = 'none';
+}, 3000);
+}
+function openRegisterModal(eventTitle) {
+modalEventTitle.textContent = `Register: ${eventTitle}`;
+modal.style.display = 'flex';
+}
+function renderEvents(categoryFilter) {
+eventsGrid.innerHTML = '';
+const filteredEvents = categoryFilter === 'All'
+? eventsData
+: eventsData.filter(event => event.category === categoryFilter);
+if (filteredEvents.length === 0) {
+eventsGrid.innerHTML = '<p style="color: var(--text-secondary);">No events found in this category yet.</p>';
+return;
+}
+filteredEvents.forEach(event => {
+const card = document.createElement('div');
+card.className = 'event-card';
+card.innerHTML = `
+<div>
+<div class="card-top">
+<span class="badge">${event.category}</span>
+<span class="event-date">${event.date}</span>
+</div>
+<h3 class="event-title">${event.title}</h3>
+<p class="event-desc">${event.description}</p>
+</div>
+<div>
+<div class="event-meta">📍 ${event.venue}</div>
+<button class="btn btn-outline register-btn" style="width: 100%;">Register Now</button>
+</div>
+`;
+card.querySelector('.register-btn').addEventListener('click', () => {
+openRegisterModal(event.title);
+});
+eventsGrid.appendChild(card);
+});
+}
+filterButtons.forEach(button => {
+button.addEventListener('click', () => {
+filterButtons.forEach(btn => btn.classList.remove('active'));
+button.classList.add('active');
+currentCategory = button.getAttribute('data-category');
+renderEvents(currentCategory);
+});
+});
+newEventForm.addEventListener('submit', (e) => {
+e.preventDefault();
+const newEvent = {
+id: eventsData.length + 1,
+title: document.getElementById('title').value,
+category: document.getElementById('category').value,
+date: document.getElementById('date').value,
+venue: document.getElementById('venue').value,
+description: document.getElementById('description').value
+};
+eventsData.unshift(newEvent);
+renderEvents(currentCategory);
+newEventForm.reset();
+showToast('New event published to the board!');
+});
+closeModalBtn.addEventListener('click', () => {
+modal.style.display = 'none';
+});
+window.addEventListener('click', (e) => {
+if (e.target === modal) {
+modal.style.display = 'none';
+}
+});
+registrationForm.addEventListener('submit', (e) => {
+e.preventDefault();
+const studentName = document.getElementById('student-name').value;
+modal.style.display = 'none';
+registrationForm.reset();
+showToast(`Thanks ${studentName}! Your spot is reserved.`);
+});
+renderEvents('All');
+</script>
+</body>
+</html>
